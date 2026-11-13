@@ -95,3 +95,5 @@ Budget3D builds on [Idol](https://huggingface.co/speridlabs/idol) and [Idol-turb
 by Sperid Labs, whose model code it imports unmodified, on [DINOv3](https://github.com/facebookresearch/dinov3) and the
 [FLUX.2](https://huggingface.co/black-forest-labs) VAE, and on the [Dome-Objaverse](https://huggingface.co/datasets/zeyuanyin/Dome-Objaverse)
 renders of [Objaverse](https://objaverse.allenai.org/).
+
+We acknowledge the compute support of the Health Care Engineering Systems Center within the Coordinated Science Lab at UIUC.
