@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+logs/
+runs/
+*.out
+third_party/
+weights/
+data/dome_objaverse/
+data/dome_unseen/
+*.ply
+*.egg-info/
+build/
+gallery*/
