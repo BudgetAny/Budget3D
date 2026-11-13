@@ -10,7 +10,7 @@
   📄 Tech report (coming soon) &nbsp;|&nbsp;
   📄 <a href="https://arxiv.org/abs/2610.12307">BudgetPix paper</a> &nbsp;|&nbsp;
   🤗 <a href="https://huggingface.co/BudgetAny">Models</a> &nbsp;|&nbsp;
-  🧩 <a href="https://budgetany.github.io/">BudgetAny</a>: <a href="https://github.com/BudgetAny/BudgetPix">BudgetPix</a> · Budget3D · <a href="https://github.com/BudgetAny/BudgetLatent">BudgetLatent</a>
+  🧩 <a href="https://budgetany.github.io/">BudgetAny</a>: <a href="https://github.com/BudgetAny/BudgetPix">BudgetPix</a> · Budget3D · <a href="https://budgetany.github.io/budgetlatent/">BudgetLatent</a>
 </p>
 
 -----
@@ -30,7 +30,7 @@ least, empty space first, are merged into coarser tokens, and the full-resolutio
 
 ## 🔥 News
 
-- **Nov 2026:** Budget3D joins [BudgetAny](https://budgetany.github.io/), next to [BudgetPix](https://github.com/BudgetAny/BudgetPix) and [BudgetLatent](https://github.com/BudgetAny/BudgetLatent), with code and weights for Idol and Idol-turbo. The tech report is coming soon.
+- **Nov 2026:** Budget3D joins [BudgetAny](https://budgetany.github.io/), next to [BudgetPix](https://github.com/BudgetAny/BudgetPix) and [BudgetLatent](https://budgetany.github.io/budgetlatent/) (coming soon), with code and weights for Idol and Idol-turbo. The tech report is coming soon.
 
 ## 📦 Models
 
