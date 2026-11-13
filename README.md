@@ -73,13 +73,6 @@ python scripts/sample.py --ckpt weights/budget3d_idol_turbo.safetensors --turbo 
 
 Tech report coming soon. Until then, please cite the BudgetPix paper, whose method it builds on:
 
-<p align="center">
-  <a href="https://arxiv.org/abs/2610.12307"><b>BudgetPix: Compute-Adaptive Tokenization for Pixel-Space Image Diffusion</b></a><br>
-  <a href="https://karaozgur.com/">Ozgur Kara</a><sup>1,†</sup>, <a href="https://scholar.google.com/citations?user=Dv5gB7cAAAAJ&hl=en">Yujia Chen</a><sup>2</sup>, <a href="https://scholar.google.com/citations?user=ve9A9rMAAAAJ&hl=en">Daniel Watson</a><sup>2</sup>, <a href="https://scholar.google.com/citations?user=5H0arvkAAAAJ&hl=en">David Forsyth</a><sup>1</sup>, <a href="https://scholar.google.com/citations?user=8kA3eDwAAAAJ&hl=en">James Matthew Rehg</a><sup>1</sup>, <a href="https://scholar.google.com/citations?user=R-OrlSgAAAAJ&hl=en">Wen-Sheng Chu</a><sup>2,‡</sup>, <a href="https://scholar.google.com/citations?user=3TVbh8QAAAAJ&hl=en">Du Tran</a><sup>2,‡</sup><br>
-  <sup>1</sup>University of Illinois Urbana-Champaign &nbsp; <sup>2</sup>Google<br>
-  <sup>†</sup>Work done during an internship at Google. &nbsp; <sup>‡</sup>Joint last authors.
-</p>
-
 ```bibtex
 @article{kara2026budgetpix,
   title={BudgetPix: Compute-Adaptive Tokenization for Pixel-Space Image Diffusion},
