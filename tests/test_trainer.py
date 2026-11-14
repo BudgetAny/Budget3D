@@ -13,7 +13,7 @@ sys.path.insert(0, ROOT)
 
 import torch.nn as nn
 
-from budget3d.trainer import lr_scale, param_groups
+from budget3d.training.trainer import lr_scale, param_groups
 
 
 class Toy(nn.Module):

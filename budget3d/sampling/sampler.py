@@ -3,7 +3,7 @@
 50 Euler steps with classifier-free guidance.  The layout is built at step 0 from pure noise -- there are no dense
 warm-up steps -- and refreshed once at step 5 from the running clean estimate, by which point the object's
 macro-occupancy has settled; it is then frozen for the remaining steps, so no bisection or argsort runs inside the
-Euler loop.  The 5-step guidance-free sampler of the Idol-turbo variant is ``budget3d.turbo.sample_turbo``.
+Euler loop.  The 5-step guidance-free sampler of the Idol-turbo variant is ``budget3d.sampling.turbo.sample_turbo``.
 """
 import os
 
@@ -11,7 +11,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from budget3d.octree import N_SOBOL, build_layout, dense_layout, detail_scores, snap_realizable_tokens
+from ..octree import N_SOBOL, build_layout, dense_layout, detail_scores, snap_realizable_tokens
 
 
 class ImagePreprocessor:
@@ -22,7 +22,7 @@ class ImagePreprocessor:
     """
 
     def __init__(self, weights_dir, device="cuda", mode="synthetic"):
-        from budget3d.encoders import build_encoder                      # first: it puts Idol's code on sys.path
+        from ..models.encoders import build_encoder                      # first: it puts Idol's code on sys.path
         from idol.models import BiRefNet
         from idol.preprocess import CROP_MARGIN, preprocess_image
         from safetensors.torch import load_file

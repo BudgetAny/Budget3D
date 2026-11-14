@@ -10,7 +10,7 @@
     # the gallery's own grid videos (input + every budget) of every n-th object, an unselected sample
     python scripts/export_hf.py grids --gallery gallery --out stage/Budget3D-Idol-Turbo/assets/step20000 --every 17
 
-A released file holds exactly the tensors ``budget3d.load.load_trained`` expects: the EMA weights of every trained
+A released file holds exactly the tensors ``budget3d.models.load.load_trained`` expects: the EMA weights of every trained
 parameter in fp32, with the training step, base model and variant in the safetensors metadata.
 """
 import argparse

@@ -15,15 +15,13 @@ trajectories on both sides of the phase boundary, under gradient checkpointing:
   * the context refiner carries LoRAs too, so the refined image condition depends on the phase: callers that
     cache it (the rollout buffer, the sampler) keep one copy per phase.
 
-The phase is derived from the model's own ``t`` argument (Idol's 0..1000 scale) by ``bind_phase``.
+The phase is derived from the model's own ``t`` argument (Idol's 0..1000 scale) by ``bind_phase``.  The 5-step
+sampler is ``budget3d.sampling.turbo.sample_turbo``.
 """
 import os
 
 import torch
 import torch.nn as nn
-from tensordict import TensorDict
-
-from budget3d.sampling import time_grid
 
 PHASE_THRESHOLD = 0.5
 # How a PhaseLoRALinear adds its low-rank delta.  True (default): the experts are selected at rank size and the delta
@@ -177,47 +175,3 @@ def make_turbo(model, lora=None, allow_uniform_fastpath=True):
     n = load_lora(model, lora)
     bind_phase(model, state)
     return model, state, n
-
-
-@torch.no_grad()
-def embed_context_phase(model, cond, slow):
-    st = model.phase_state
-    st.set_uniform(slow, cond.batch_size[0], cond["feature1"].device)
-    return model.embed_context(cond)
-
-
-@torch.no_grad()
-def sample_turbo(student, cond, budget=1.0, steps=5, rescale_t=3.0, relayout_until_step=-1, seed=42, device="cuda",
-                 noise=None):
-    """Guidance-free few-step sampling at a token budget (the idol-turbo sampler with Budget3D layouts).
-
-    One forward per step; the expert follows t; the layout is built from pure noise at step 0 and rebuilt from
-    the running clean estimate at every later step (cheap next to a forward), or until ``relayout_until_step``.
-    """
-    from budget3d.octree import N_SOBOL, build_layout, detail_scores, snap_realizable_tokens
-    b = cond.batch_size[0]
-    n_tokens = snap_realizable_tokens(budget * N_SOBOL)
-    h_slow = embed_context_phase(student, cond, True)
-    h_fast = embed_context_phase(student, cond, False)
-    if noise is not None:
-        z, cam = noise
-    else:
-        torch.manual_seed(seed)
-        z = torch.randn(b, student.q_token_length, student.in_channels, device=device)
-        cam = torch.randn(b, 1, student.cam_channels, device=device)
-    grid = time_grid(steps, rescale_t)
-    layout, z0 = None, z
-    for i in range(steps):
-        t, t_prev = float(grid[i]), float(grid[i + 1])
-        if layout is None or relayout_until_step < 0 or i <= relayout_until_step:
-            ref = z if i == 0 else z0
-            s4, s2 = detail_scores(ref[:, student.perm_to_octree].reshape(b, 16, 16, 16, 2, -1))
-            layout = build_layout(s4, s2, n_tokens)
-        tt = torch.full((b,), 1000 * t, device=device)
-        out = student(TensorDict({"latent": z, "camera": cam}, batch_size=b), tt,
-                      h_cond=h_slow if t >= PHASE_THRESHOLD else h_fast, layout=layout)
-        v, v_cam = out["latent"], out["camera"]
-        z0 = z - t * v
-        z = z - (t - t_prev) * v
-        cam = cam - (t - t_prev) * v_cam
-    return z, cam, layout

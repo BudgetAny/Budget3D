@@ -9,8 +9,8 @@ training step -- with three changes:
 import torch
 from tensordict import TensorDict
 
-from budget3d.rollout import RolloutStream
-from budget3d.turbo import PHASE_THRESHOLD
+from ..models.turbo import PHASE_THRESHOLD
+from .rollout import RolloutStream
 
 
 class TurboRolloutStream(RolloutStream):

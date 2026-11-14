@@ -27,8 +27,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 import torch
 
 from gallery import MemProbe, Preprocessor, decode, load_models, object_noise, orbit_camera
-from budget3d.splat import Splats, orbit_positions, render
-from budget3d.sampling import sample
+from budget3d.render.splat import Splats, orbit_positions, render
+from budget3d.sampling.sampler import sample
 
 VARIANTS = ["fp32", "bf16", "bf16_cudnn", "bf16_cudnn_compile", "bf16_cudnn_compileall"]
 
@@ -44,7 +44,7 @@ def set_variant(student, name):
     torch.backends.cudnn.allow_tf32 = bf16
     idol_layers.ATTN_BACKEND = "sdpa_cudnn" if "cudnn" in name else "sdpa"
     if "compile" in name:
-        from budget3d.fast import optimize_for_inference
+        from budget3d.sampling.fast import optimize_for_inference
         mode = "max-autotune-no-cudagraphs" if "autotune" in name else (
             "reduce-overhead" if "cudagraphs" in name else None)
         optimize_for_inference(student, attention=idol_layers.ATTN_BACKEND, compile_blocks=True,

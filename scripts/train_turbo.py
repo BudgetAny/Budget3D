@@ -23,15 +23,15 @@ import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from budget3d.curriculum import LayoutSampler
-from budget3d.data import image_stream
-from budget3d.encoders import build_encoder
-from budget3d.load import idol_weights_dir, load_student
-from budget3d.losses import distill_loss
+from budget3d.models.encoders import build_encoder
+from budget3d.models.load import idol_weights_dir, load_student
+from budget3d.models.turbo import lora_path, make_turbo, set_lora_fused
 from budget3d.octree import point_scales
-from budget3d.rollout_turbo import TurboRolloutStream
-from budget3d.trainer import add_common_args, init_process, lr_scale, param_groups, parse_args
-from budget3d.turbo import lora_path, make_turbo, set_lora_fused
+from budget3d.training.curriculum import LayoutSampler
+from budget3d.training.data import image_stream
+from budget3d.training.losses import distill_loss
+from budget3d.training.rollout_turbo import TurboRolloutStream
+from budget3d.training.trainer import add_common_args, init_process, lr_scale, param_groups, parse_args
 
 CTX_TOKENS = 4102                  # image-condition tokens every sequence carries next to the latent tokens
 ACT_BYTES = 2.4 * 2 ** 20          # activations kept per token and row without gradient checkpointing: 2.05 MiB
@@ -75,7 +75,7 @@ def main():
     # the contract: with the adapters zero, the student at the dense layout *is* the released
     # model.  Checked in fp32 against Idol's own class, so it is a real identity, not a tolerance.
     if main_proc and not a.skip_parity:
-        from budget3d.turbo_parity import check_turbo_parity
+        from budget3d.models.turbo_parity import check_turbo_parity
         rep = check_turbo_parity(student, weights, lora, device=device)       # in the classic LoRA form: exact
         print(f"[parity] student == idol-turbo (official LoRA code) at the dense layout: {rep}", flush=True)
         torch.cuda.empty_cache()
@@ -178,7 +178,7 @@ def main():
                 student.grad_checkpointing = forced or last_pass or need > budget
                 plain += not student.grad_checkpointing
                 passes += 1
-            # precision is handled inside the model (see model.bf16_matmuls): bf16 only in the
+            # precision is handled inside the model (see budget3d.models.denoiser.bf16_matmuls): bf16 only in the
             # transformer blocks, fp32 residual stream, norms and output heads
             parts = None
             try:

@@ -6,9 +6,9 @@ import importlib.util
 import torch
 from tensordict import TensorDict
 
-from budget3d.load import load_teacher
-from budget3d.octree import dense_layout
-from budget3d.turbo import LORA_ALPHA, LORA_RANK, TURBO_REPO, set_lora_fused
+from ..octree import dense_layout
+from .load import load_teacher
+from .turbo import LORA_ALPHA, LORA_RANK, TURBO_REPO, set_lora_fused
 
 
 def official_turbo_module():

@@ -15,8 +15,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 
 import torch
 
-from budget3d.load import decode_gaussians, idol_weights_dir, load_budget3d, load_decoders
-from budget3d.sampling import ImagePreprocessor, sample
+from budget3d.models.load import decode_gaussians, idol_weights_dir, load_budget3d, load_decoders
+from budget3d.sampling.sampler import ImagePreprocessor, sample
 
 
 def main():
@@ -44,13 +44,13 @@ def main():
     weights = idol_weights_dir()
     model, step = load_budget3d(a.ckpt, turbo=a.turbo, lora=a.lora, device=dev, ema=not a.raw, weights_dir=weights)
     if a.fast:
-        from budget3d.fast import optimize_for_inference
+        from budget3d.sampling.fast import optimize_for_inference
         optimize_for_inference(model)
     print(f"[sample] loaded {a.ckpt} (step {step}, {'raw' if a.raw else 'EMA'} weights)")
 
     prepared, cond = ImagePreprocessor(weights, dev, a.mode)(a.image)       # Idol's own framing and frozen encoders
     if a.turbo:
-        from budget3d.turbo import sample_turbo
+        from budget3d.sampling.turbo import sample_turbo
         latent, camera, layout = sample_turbo(model, cond, a.budget, a.steps or 5, a.rescale_t, seed=a.seed, device=dev)
     else:
         latent, camera, layout = sample(model, cond, a.budget, a.steps or 50, a.cfg, a.rescale_t,

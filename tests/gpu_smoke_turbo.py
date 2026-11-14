@@ -29,11 +29,12 @@ def main():
     os.makedirs(a.out, exist_ok=True)
     dev = "cuda"
     from gallery import Preprocessor, decode, object_noise, orbit_camera
-    from budget3d.load import idol_weights_dir, load_student, load_teacher
-    from budget3d.sampling import time_grid
-    from budget3d.splat import Splats, orbit_positions, render
-    from budget3d.turbo import lora_path, make_turbo, sample_turbo, set_lora_fused
-    from budget3d.turbo_parity import check_turbo_parity, official_turbo_module
+    from budget3d.models.load import idol_weights_dir, load_student, load_teacher
+    from budget3d.models.turbo import lora_path, make_turbo, set_lora_fused
+    from budget3d.models.turbo_parity import check_turbo_parity, official_turbo_module
+    from budget3d.render.splat import Splats, orbit_positions, render
+    from budget3d.sampling.sampler import time_grid
+    from budget3d.sampling.turbo import sample_turbo
 
     weights = idol_weights_dir()
     lora = lora_path()
@@ -46,7 +47,7 @@ def main():
 
     # 2. sampler parity at 100 %, fp32, real conditioning; in the classic LoRA form, which is the official code's
     was_fused = set_lora_fused(False)
-    from budget3d.load import load_decoders
+    from budget3d.models.load import load_decoders
     dec, dec_gs, cfg_json = load_decoders(weights, dev)
     prep = Preprocessor(weights, dev, "synthetic")
     _, cond = prep(a.image)

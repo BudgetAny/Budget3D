@@ -1,6 +1,6 @@
 """Optimised inference for the Budget3D-Idol sampler.
 
-    from budget3d.fast import optimize_for_inference
+    from budget3d.sampling.fast import optimize_for_inference
     optimize_for_inference(student)            # after loading the weights, before sampling
 
 What it switches on (measured in scripts/bench_infer.py; the token layouts and the weights are unchanged):
@@ -21,10 +21,10 @@ ATTN_DEFAULT = "sdpa_cudnn"
 
 
 def _compile_blocks(student, mode=None):
-    """torch.compile Idol's transformer blocks and RePo layers (the same as model.compile_blocks, with a mode).
+    """torch.compile Idol's transformer blocks and RePo layers (the same as Budget3DModel.compile_blocks, with a mode).
     RePo is switched to real (cos, sin) rotations first: Inductor cannot compile the complex form."""
     import types
-    from budget3d.upstream import idol_layers
+    from ..upstream import idol_layers
     kinds = (idol_layers.UnifiedTransformerBlock, idol_layers.RePo3DRotaryEmbedding)
     compiled = {}
     for mod in student.modules():
@@ -39,7 +39,7 @@ def _compile_blocks(student, mode=None):
 
 def optimize_for_inference(student, attention=ATTN_DEFAULT, compile_blocks=True, compile_adapters=True,
                            cache_size_limit=256, mode=None):
-    from budget3d.upstream import idol_layers
+    from ..upstream import idol_layers
     for m in student.modules():
         if hasattr(m, "bf16_blocks"):
             m.bf16_blocks = True

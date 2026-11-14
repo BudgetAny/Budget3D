@@ -6,9 +6,9 @@ import torch
 from safetensors.torch import load_file
 from tensordict import TensorDict
 
-from budget3d.model import Budget3DModel
-from budget3d.octree import dense_layout
-from budget3d.upstream import LatentSeqMMFlowModel
+from ..octree import dense_layout
+from ..upstream import LatentSeqMMFlowModel
+from .denoiser import Budget3DModel
 
 # the configuration of the added modules that the released checkpoints were trained with
 ADAPTER_DEFAULTS = dict(mix_bott=256, ipe_bottleneck=256, refine_width=128, refine_depth=2, refine_heads=4,
@@ -84,7 +84,7 @@ def load_budget3d(ckpt=None, turbo=False, lora=None, device="cpu", ema=True, wei
     """
     model = load_student(weights_dir or idol_weights_dir(), device=device)
     if turbo:
-        from budget3d.turbo import make_turbo
+        from .turbo import make_turbo
         make_turbo(model, lora)
     step = load_trained(model, ckpt, ema) if ckpt else 0
     return model.bind_geometry().eval(), step

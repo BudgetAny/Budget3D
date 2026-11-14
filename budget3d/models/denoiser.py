@@ -17,10 +17,10 @@ from tensordict import TensorDict
 
 from torch.utils.checkpoint import checkpoint
 
-from budget3d.modules import MipNeRFIPE3D, RMSNorm, RefineStage, ScaleMixer3D, _zero, wiener_hf_gain
-from budget3d.octree import (N_CELL, N_CUBE, N_SOBOL, Layout, cell_centers, cell_child_offsets, cells_to_cubes,
-                    cube_centers, cube_child_offsets, dense_layout, octree_permutation)
-from budget3d.upstream import LatentSeqMMFlowModel
+from .adapters import MipNeRFIPE3D, RMSNorm, RefineStage, ScaleMixer3D, _zero, wiener_hf_gain
+from ..octree import (N_CELL, N_CUBE, N_SOBOL, Layout, cell_centers, cell_child_offsets, cells_to_cubes,
+                      cube_centers, cube_child_offsets, dense_layout, octree_permutation)
+from ..upstream import LatentSeqMMFlowModel
 
 BP_PREFIX = "bp_"
 
@@ -310,7 +310,7 @@ class Budget3DModel(LatentSeqMMFlowModel):
         """
         import types
 
-        from budget3d.upstream import idol_layers
+        from ..upstream import idol_layers
         compiled = {}
         kinds = (idol_layers.UnifiedTransformerBlock, idol_layers.RePo3DRotaryEmbedding)
         for mod in self.modules():
@@ -326,7 +326,7 @@ class Budget3DModel(LatentSeqMMFlowModel):
     def use_real_rope(self):
         """Switch the RePo layers to real (cos, sin) rotations without compiling, so an
         uncompiled model matches a compiled one."""
-        from budget3d.upstream import idol_layers
+        from ..upstream import idol_layers
         for mod in self.modules():
             if isinstance(mod, idol_layers.RePo3DRotaryEmbedding):
                 mod.real_valued = True

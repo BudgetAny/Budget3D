@@ -21,11 +21,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
 from tensordict import TensorDict
 
-from budget3d.load import (check_dense_parity, idol_weights_dir, load_budget3d, load_student, load_teacher,
-                           read_checkpoint)
+from budget3d.models.load import (check_dense_parity, idol_weights_dir, load_budget3d, load_student, load_teacher,
+                                  read_checkpoint)
+from budget3d.models.turbo import set_lora_fused
 from budget3d.octree import N_SOBOL, build_layout, detail_scores, snap_realizable_tokens
-from budget3d.sampling import sample
-from budget3d.turbo import sample_turbo, set_lora_fused
+from budget3d.sampling.sampler import sample
+from budget3d.sampling.turbo import sample_turbo
 
 BUDGET = 0.1
 T_VALUES = (731.0, 200.0)        # one time in each Idol-turbo phase (slow expert above 500, fast below)

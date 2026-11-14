@@ -14,7 +14,7 @@ exactly one teacher pass and only ~1/R of the trajectories need a new image enco
 import torch
 from tensordict import TensorDict
 
-from budget3d.octree import N_SOBOL
+from ..octree import N_SOBOL
 
 
 def warped_grid(n, steps, rescale_t=3.0, jitter=0.4, device="cpu", generator=None):

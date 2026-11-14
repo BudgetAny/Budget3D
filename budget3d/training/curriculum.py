@@ -14,8 +14,8 @@ import math
 
 import torch
 
-from budget3d.octree import (N_CUBE, N_SOBOL, THRESHOLDS, build_layout, dense_layout, detail_scores,
-                    random_scores, snap_realizable_tokens, threshold_layout_tokens, uniform_layout)
+from ..octree import (N_CUBE, N_SOBOL, THRESHOLDS, build_layout, dense_layout, detail_scores,
+                      random_scores, snap_realizable_tokens, threshold_layout_tokens, uniform_layout)
 
 
 class LayoutSampler:

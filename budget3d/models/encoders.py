@@ -19,7 +19,7 @@ import os
 
 import torch
 
-from budget3d.upstream import REPO_ROOT  # (importing upstream also puts Idol on sys.path)
+from ..upstream import REPO_ROOT  # (importing upstream also puts Idol on sys.path)
 from idol.conditioning import ImageEncoder as IdolImageEncoder
 
 DINOV3_DIR = os.environ.get("BUDGET3D_DINOV3", os.path.join(

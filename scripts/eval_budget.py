@@ -50,8 +50,8 @@ def main():
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--shard", default="0/1")
     a = ap.parse_args()
-    from budget3d.load import decode_gaussians as decode, idol_weights_dir, load_decoders
-    from budget3d.splat import Splats, orbit_positions, render
+    from budget3d.models.load import decode_gaussians as decode, idol_weights_dir, load_decoders
+    from budget3d.render.splat import Splats, orbit_positions, render
     dev = torch.device("cuda")
     dec, dec_gs, cfg = load_decoders(idol_weights_dir(), dev)
     try:

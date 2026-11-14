@@ -9,13 +9,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
 from tensordict import TensorDict
 
-from budget3d.curriculum import LayoutSampler
-from budget3d.data import image_stream
-from budget3d.encoders import build_encoder
-from budget3d.load import check_dense_parity, idol_weights_dir, load_student, load_teacher
-from budget3d.losses import distill_loss
+from budget3d.models.encoders import build_encoder
+from budget3d.models.load import check_dense_parity, idol_weights_dir, load_student, load_teacher
 from budget3d.octree import build_layout, detail_scores, point_scales, uniform_layout
-from budget3d.rollout import RolloutStream
+from budget3d.training.curriculum import LayoutSampler
+from budget3d.training.data import image_stream
+from budget3d.training.losses import distill_loss
+from budget3d.training.rollout import RolloutStream
 
 REF_ADAPTERS = {"bp_scale_emb": 4096, "bp_ipe": 288000, "bp_mixers.2": 791296, "bp_mixers.4": 2387200,
                 "bp_refiners.4": 1980688, "bp_refiners.2": 1979920, "bp_feat_proj": 132224}

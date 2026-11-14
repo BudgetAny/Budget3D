@@ -22,11 +22,11 @@ import numpy as np
 import torch
 from PIL import Image
 
-from budget3d.load import decode_gaussians as decode  # noqa: F401  (re-exported for bench_infer and the tests)
-from budget3d.load import idol_weights_dir, load_budget3d, load_decoders
-from budget3d.sampling import ImagePreprocessor as Preprocessor
-from budget3d.sampling import sample
-from budget3d.splat import Splats, orbit_positions, render
+from budget3d.models.load import decode_gaussians as decode  # noqa: F401  (re-exported for bench_infer and the tests)
+from budget3d.models.load import idol_weights_dir, load_budget3d, load_decoders
+from budget3d.render.splat import Splats, orbit_positions, render
+from budget3d.sampling.sampler import ImagePreprocessor as Preprocessor
+from budget3d.sampling.sampler import sample
 
 
 class MemProbe:
@@ -213,7 +213,7 @@ def main():
     gpu = torch.cuda.get_device_name()
     precision = "fp32"
     if a.fast:
-        from budget3d.fast import describe, optimize_for_inference
+        from budget3d.sampling.fast import describe, optimize_for_inference
         optimize_for_inference(student)
         precision = describe()
     print(f"[gallery] student at step {step} (EMA), {precision}, GPU {gpu}", flush=True)
@@ -241,7 +241,7 @@ def main():
         for budget in sorted(a.budgets, reverse=True):
             with MemProbe() as mp:
                 if a.turbo:
-                    from budget3d.turbo import sample_turbo
+                    from budget3d.sampling.turbo import sample_turbo
                     latent, camera, layout = sample_turbo(student, cond, budget, a.steps, a.rescale_t, seed=a.seed,
                                                           device=dev, noise=noise)
                 else:

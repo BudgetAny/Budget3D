@@ -2,11 +2,13 @@
 
 The package layout:
 
-    octree, modules, model      the token layouts, the added modules, Idol's denoiser on an adaptive token set
-    upstream, encoders, load    Idol's unmodified code, its frozen encoders, loading released and trained weights
-    sampling, turbo, fast       the 50-step guided sampler, the 5-step Idol-turbo variant, optimised inference
-    curriculum, rollout, rollout_turbo, losses, data, trainer, turbo_parity     training
-    splat                       a small Gaussian-splat renderer for galleries and evaluation
+    octree      the token layouts: the Sobol-to-octree bijection, salience, exact-budget layouts
+    upstream    Idol's unmodified code (see IDOL_ROOT)
+    models/     Idol's denoiser on an adaptive token set, the added modules, Idol-turbo's experts, the frozen
+                encoders, loading released and trained weights
+    sampling/   the 50-step guided sampler, the 5-step Idol-turbo variant, optimised inference
+    training/   the layout curriculum, the teacher rollouts, the loss, the data, what the two trainers share
+    render/     a small Gaussian-splat renderer for galleries and evaluation
 
 Importing ``budget3d`` is cheap; the submodules that need Idol's code import it on first use (see ``upstream``).
 """

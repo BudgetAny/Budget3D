@@ -20,7 +20,7 @@ import torch
 from PIL import Image
 from torch.utils.data import IterableDataset, get_worker_info
 
-from budget3d.upstream import IDOL_ROOT  # noqa: F401
+from ..upstream import IDOL_ROOT  # noqa: F401
 from idol.preprocess import preprocess_image
 
 CROP_MARGIN = 1.2          # Idol's 'synthetic' mode: renders of a single object

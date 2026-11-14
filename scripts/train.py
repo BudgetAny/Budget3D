@@ -19,14 +19,14 @@ import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from budget3d.curriculum import LayoutSampler
-from budget3d.data import image_stream
-from budget3d.encoders import build_encoder
-from budget3d.load import check_dense_parity, idol_weights_dir, load_student, load_teacher
-from budget3d.losses import distill_loss
+from budget3d.models.encoders import build_encoder
+from budget3d.models.load import check_dense_parity, idol_weights_dir, load_student, load_teacher
 from budget3d.octree import point_scales
-from budget3d.rollout import RolloutStream
-from budget3d.trainer import add_common_args, init_process, lr_scale, param_groups, parse_args
+from budget3d.training.curriculum import LayoutSampler
+from budget3d.training.data import image_stream
+from budget3d.training.losses import distill_loss
+from budget3d.training.rollout import RolloutStream
+from budget3d.training.trainer import add_common_args, init_process, lr_scale, param_groups, parse_args
 
 
 def main():
@@ -142,7 +142,7 @@ def main():
                     m = drop.reshape(-1, *([1] * (tg[f"{key}_pos"].ndim - 1)))
                     tg[f"{key}_pos"] = torch.where(m, tg[f"{key}_neg"], tg[f"{key}_pos"])
             sync = net.no_sync() if world > 1 and micro < a.grad_accum - 1 else nullcontext()
-            # precision is handled inside the model (see model.bf16_matmuls): bf16 only in the
+            # precision is handled inside the model (see budget3d.models.denoiser.bf16_matmuls): bf16 only in the
             # transformer blocks, fp32 residual stream, norms and output heads
             with sync:
                 out = net(tg["x"], t, stream.cond(idx, drop), layout=layout, return_features=True)
