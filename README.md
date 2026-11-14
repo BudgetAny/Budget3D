@@ -55,8 +55,8 @@ python scripts/convert_dinov3_to_hf.py --model-name vith16plus_lvd1689m --save-d
 #### Download the weights
 
 ```bash
-hf download BudgetAny/Budget3D-Idol budget3d_idol.safetensors --local-dir weights
-hf download BudgetAny/Budget3D-Idol-Turbo budget3d_idol_turbo.safetensors --local-dir weights
+hf download BudgetAny/Budget3D-Idol budget3d_idol.safetensors config.json --local-dir weights
+hf download BudgetAny/Budget3D-Idol-Turbo budget3d_idol_turbo.safetensors config.json --local-dir weights
 # Idol's own weights are downloaded from speridlabs on first use
 ```
 
