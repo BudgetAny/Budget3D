@@ -7,6 +7,8 @@
 
 <p align="center">
   🌐 <a href="https://budgetany.github.io/budget3d/"><b>Project page</b></a> &nbsp;|&nbsp;
+  🎮 <a href="https://huggingface.co/spaces/hugging-apps/budget3d-idol"><b>Demo</b></a> &nbsp;|&nbsp;
+  🖥️ <a href="https://github.com/RetroUpgrade-YouTube/budget3d-webui"><b>WebUI</b></a> &nbsp;|&nbsp;
   📄 Tech report (coming soon) &nbsp;|&nbsp;
   📄 <a href="https://arxiv.org/abs/2610.12307">BudgetPix paper</a> &nbsp;|&nbsp;
   🤗 <a href="https://huggingface.co/BudgetAny">Models</a> &nbsp;|&nbsp;
@@ -30,6 +32,8 @@ least, empty space first, are merged into coarser tokens, and the full-resolutio
 
 ## 🔥 News
 
+- **Nov 2026:** Two community interfaces: an online [demo](https://huggingface.co/spaces/hugging-apps/budget3d-idol) of Budget3D-Idol on Hugging Face Spaces,
+  with nothing to install, and a [WebUI](https://github.com/RetroUpgrade-YouTube/budget3d-webui) to run Budget3D locally. Thanks to their authors!
 - **Nov 2026:** Budget3D joins [BudgetAny](https://budgetany.github.io/), next to [BudgetPix](https://github.com/BudgetAny/BudgetPix) and [BudgetLatent](https://budgetany.github.io/budgetlatent/) (coming soon), with code and weights for Idol and Idol-turbo. The tech report is coming soon.
 
 ## 📦 Models
@@ -41,14 +45,22 @@ least, empty space first, are merged into coarser tokens, and the full-resolutio
 
 ## 🚀 Usage
 
+#### Demo and WebUI
+
+To try Budget3D-Idol without any setup, use the online [demo](https://huggingface.co/spaces/hugging-apps/budget3d-idol) on Hugging Face Spaces. To run Budget3D
+on your own GPU with a graphical interface, use the community [WebUI](https://github.com/RetroUpgrade-YouTube/budget3d-webui) (Gradio): Idol and Idol-turbo
+checkpoints, a token-budget slider, an interactive 3D view, a turntable video and the `.ply` download, with a
+one-command setup on Windows. Both are community projects built on this repository.
+
 #### Installation
 
-Python 3.10+ and a CUDA GPU.
+Python 3.11 to 3.13 (tested with 3.12) and a CUDA GPU.
 
 ```bash
 git clone https://github.com/BudgetAny/Budget3D && cd Budget3D
 git clone https://github.com/speridlabs/idol-sdk third_party/idol-sdk      # Idol's model code
-pip install -r requirements.txt -r third_party/idol-sdk/requirements.txt
+git -C third_party/idol-sdk checkout 956439f      # the tested commit; later ones need diffusers >= 0.40
+pip install -r requirements.txt                   # Idol's dependencies included
 python scripts/convert_dinov3_to_hf.py --model-name vith16plus_lvd1689m --save-dir weights/dinov3   # Idol's image encoder, converted once
 ```
 
